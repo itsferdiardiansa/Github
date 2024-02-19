@@ -1,1 +1,1 @@
-note_template='[${{github.event.inputs.tag}}](https://github.com/itsferdiardiansa/Github/pulls?q=is%3Apr+is%3Aclosed) | https://github.com/itsferdiardiansa/Github/compare/${{github.event.inputs.tag}}...${{github.event.inputs.tag}}'
+New auth feature
