@@ -1,21 +1,39 @@
 name: Release
-run-name: "release: ${{ inputs.tag }} ${{ inputs.ref }}"
+run-name: "release: ${{ inputs.workspace }}/${{ inputs.path }}"
 env:
   GITHUB_TOKEN: ${{ github.token }}
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: "tag"
+      workspace:
+        description: "Choose a workspace"
         required: true
-      ref:
-        description: "released ref (branch, tag, or SHA)"
-        required: false
-        default: ""
+        type: choice
+        options:
+          - apps
+          - packages
+      type:
+        description: "Choose a release version type"
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      path:
+        description: "Need a release path directory"
+        type: string
+        required: true
+      commit_tag:
+        description: "Need a commit tag"
+        type: string
+        required: true
 permissions: write-all
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      COMMIT_TAG: ${{ github.event.input.commit_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -34,21 +52,11 @@ jobs:
       - run: git config user.name "github-actions[bot]"
       - run: git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - run: git tag "${{github.event.inputs.tag}}"
-      - run: git push origin "${{github.event.inputs.tag}}"
+      # - run: git tag "${{github.event.inputs.tag}}"
+      # - run: git push origin "${{github.event.inputs.tag}}"
 
-      - run: |
-          note_template='[${{github.event.inputs.tag}}](https://github.com/itsferdiardiansa/Github/compare/${{github.event.inputs.tag}}...${{github.event.inputs.tag}}) | [Pull Requests](https://github.com/itsferdiardiansa/Github/pulls?q=is%3Apr+is%3Aclosed) ${{ steps.date.outputs.time }}'
-          gh release create "${{github.event.inputs.tag}}" -p --title "${{github.event.inputs.tag}}" -n "${note_template//BASE_REVISION/$BASE_REVISION}"
+      - run: ./scripts/release.sh --type=${{ github.event.inputs.type }} --workspace=${{ github.event.inputs.workspace }} --path=${{ github.event.inputs.path }}
 
-      - name: Build Changelog
-        id: github_release
-        uses: mikepenz/release-changelog-builder-action@v3
-        env:
-          toTag: ${{github.event.inputs.tag}}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Create Release
-        uses: mikepenz/action-gh-release@v0.2.0-a03 #softprops/action-gh-release
-        with:
-          body: ${{steps.github_release.outputs.changelog}}
+      # - run: |
+      #     note_template='Release v[${{github.event.inputs.tag}}](https://github.com/itsferdiardiansa/Github/compare/${{github.event.inputs.tag}}...${{github.event.inputs.tag}}) | [Pull Requests](https://github.com/itsferdiardiansa/Github/pulls?q=is%3Apr+is%3Aclosed) ${{ steps.date.outputs.time }}'
+      #     gh release create "${{github.event.inputs.tag}}" -p --title "${{github.event.inputs.tag}}" -n "${note_template//BASE_REVISION/$BASE_REVISION}"
