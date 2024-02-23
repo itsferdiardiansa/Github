@@ -43,7 +43,8 @@ createGitTag() {
   git tag ${tagVersion}
 
   git push origin ${tagVersion}
-  git push origin main
+
+  echo "${COMMIT_TAG}"
 }
 
 genereteVersion() {

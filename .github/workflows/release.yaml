@@ -24,10 +24,16 @@ on:
         description: "Need a release path directory"
         type: string
         required: true
+      commit_tag:
+        description: "Need a commit tag"
+        type: string
+        required: true
 permissions: write-all
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      COMMIT_TAG: ${{ github.event.input.commit_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
