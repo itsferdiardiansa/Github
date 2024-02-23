@@ -33,11 +33,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      COMMIT_TAG: ${{ github.event.input.commit_tag }}
+      COMMIT_TAG: ${{ github.event.inputs.commit_tag }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
+          token: ${{ secrets.WORKFLOW_TOKEN }}
       
       - name: Set current date
         id: date

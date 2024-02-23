@@ -38,13 +38,14 @@ createGitTag() {
   tagVersion="${workspaceName}-${latestVersion}"
 
   echo "Workspace name: ${workspaceName}"
+  git fetch
   git add ${dirPath}
   git commit -m "chore: release ${tagVersion}"
-  git tag ${tagVersion}
+  git tag ${tagVersion} ${COMMIT_TAG}
 
   git push origin ${tagVersion}
 
-  echo "${COMMIT_TAG}"
+  echo "commit tag: ${COMMIT_TAG}"
 }
 
 genereteVersion() {
