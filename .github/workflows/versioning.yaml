@@ -1,4 +1,4 @@
-name: Pre-release
+name: Versioning
 run-name: "versioning: ${{ inputs.workspace }}/${{ inputs.path }}"
 env:
   GITHUB_TOKEN: ${{ github.token }}
@@ -6,14 +6,14 @@ on:
   workflow_dispatch:
     inputs:
       workspace:
-        description: "Choose a workspace"
+        description: "Which workspace would you like to choose?"
         required: true
         type: choice
         options:
           - apps
           - packages
       type:
-        description: "Choose a release version type"
+        description: "What kind of version type would you like to release?"
         required: true
         type: choice
         options:
@@ -21,15 +21,15 @@ on:
           - minor
           - patch
       path:
-        description: "Need a release path directory"
+        description: "Type a release path directory"
         type: string
         required: true
       pull_request_url:
-        description: "Include pull request url"
+        description: "Type pull request url"
         type: string
         required: true
       commit_tag:
-        description: "Type the commit sha"
+        description: "Type the commit (SHA)"
         type: string
         required: false
 permissions: write-all
@@ -58,4 +58,4 @@ jobs:
       - run: git config user.name "github-actions[bot]"
       - run: git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - run: ./scripts/versioning.sh --type=${{ github.event.inputs.type }} --workspace=${{ github.event.inputs.workspace }} --path=${{ github.event.inputs.path }}
+      - run: ./scripts/generate-version.sh --type=${{ github.event.inputs.type }} --workspace=${{ github.event.inputs.workspace }} --path=${{ github.event.inputs.path }}
