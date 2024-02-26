@@ -56,7 +56,7 @@ createGitTag() {
 
   if [ -z "${COMMIT_TAG}" ]; then
     git tag ${tagVersion} ${COMMIT_TAG} -m "${tagMessage}"
-  else;
+  else
     git tag ${tagVersion} -m "${tagMessage}"
   fi
 
