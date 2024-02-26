@@ -39,6 +39,7 @@ jobs:
     env:
       COMMIT_TAG: ${{ github.event.inputs.commit_tag }}
       PULL_REQUEST_URL: ${{ github.event.inputs.pull_request_url }}
+      GITHUB_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
     steps:
       - uses: actions/checkout@v4
         with:
