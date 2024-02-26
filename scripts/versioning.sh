@@ -22,6 +22,8 @@ workspaceName=""
 pkgJson=""
 latestVersion=""
 tagVersion=""
+tagMessage=""
+
 declare -A commands=(
   [type]="" 
   [workspace]=""
@@ -33,19 +35,32 @@ updateVersion() {
   sed -i "s/\"version\": \".*\"/\"version\": \"$latestVersion\"/" ${pkgJson}
 }
 
+createTagMessage() {
+  tagMessage="
+[Release] Bump version to ${tagVersion} (${PULL_REQUEST_URL}). 
+Change was created by the github actions and automation script.
+  "
+}
+
 createGitTag() {
   dirPath="${commands[workspace]}/${commands[path]}"
   tagVersion="${workspaceName}-${latestVersion}"
 
-  echo "Workspace name: ${workspaceName}"
+  createTagMessage
+
+  echo "Create tag on ${workspaceName} workspace."
+  
   git fetch
   git add ${dirPath}
   git commit -m "chore: release ${tagVersion}"
-  git tag ${tagVersion} ${COMMIT_TAG}
 
+  git tag ${tagVersion} -m "${tagMessage}"
+
+  # Push tag to remote repository
   git push origin ${tagVersion}
 
-  echo "commit tag: ${COMMIT_TAG}"
+  # Push commit to remote branch
+  git push origin main
 }
 
 genereteVersion() {
