@@ -54,7 +54,12 @@ createGitTag() {
   git add ${dirPath}
   git commit -m "chore: release ${tagVersion}"
 
-  git tag ${tagVersion} -m "${tagMessage}"
+  if [ -z "${COMMIT_TAG}" ]; then
+    git tag ${tagVersion} ${COMMIT_TAG} -m "${tagMessage}"
+  else;
+    git tag ${tagVersion} -m "${tagMessage}"
+  fi
+
 
   # Push tag to remote repository
   git push origin ${tagVersion}

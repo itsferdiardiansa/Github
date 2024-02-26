@@ -28,11 +28,16 @@ on:
         description: "Include pull request url"
         type: string
         required: true
+      commit_tag:
+        description: "Type the commit sha"
+        type: string
+        required: false
 permissions: write-all
 jobs:
   tagging:
     runs-on: ubuntu-latest
     env:
+      COMMIT_TAG: ${{ github.event.inputs.commit_tag }}
       PULL_REQUEST_URL: ${{ github.event.inputs.pull_request_url }}
     steps:
       - uses: actions/checkout@v4
