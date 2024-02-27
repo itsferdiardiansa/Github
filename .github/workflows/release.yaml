@@ -1,0 +1,23 @@
+name: Release
+run-name: "release: ${{ inputs.tag }}"
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Type the tag"
+        type: string
+        required: false
+permissions: write-all
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag }}
+
+      # - run: git checkout ${{ inputs.tag }}
+
+      - run: git log --oneline -10
