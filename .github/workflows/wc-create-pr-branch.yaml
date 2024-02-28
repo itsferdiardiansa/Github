@@ -1,0 +1,19 @@
+name: Create a pull request
+on:
+  workflow_call:
+    inputs:
+      version:
+        required: true
+        type: string
+permissions:
+  contents: write
+  pull-request: write
+jobs:
+  create-pr-branch:
+    runs: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - run: echo ${{ inputs.version }}
