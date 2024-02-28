@@ -1,13 +1,10 @@
-### What have you done 🤔? ...
+### This pull request contains 🤔? ...
 
 - [ ] New feature.
 - [ ] Add/update apps.
-- [ ] Add/update webs.
 - [ ] Add/update packages.
 - [ ] Bug fix.
 - [ ] Documentation.
-- [ ] TypeScript definition update.
-- [ ] Bundle size optimization.
 - [ ] Performance optimization.
 - [ ] Enhancement feature.
 - [ ] Refactoring.
@@ -15,6 +12,6 @@
 - [ ] Github actions / CI.
 - [ ] Other (about what?).
 
-### 📝 Changelog
+### 📝 Description
 
 <!-- Describe changes from the user side, and list all potential break changes or other risks. --->
