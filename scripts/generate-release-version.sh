@@ -87,7 +87,8 @@ createPullRequest() {
   git fetch
 
   git checkout -b release/${tagVersion} origin/${REF}
-  
+
+  updateVersion  
   createTag
   createPullRequestTemplate
 
