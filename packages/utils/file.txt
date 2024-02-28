@@ -13,3 +13,5 @@ create merge method
 
 added hash method
 updated merge method parameters
+
+add encoding method
