@@ -12,4 +12,8 @@ jobs:
   create-pr-branch:
     runs: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - run: echo ${{ inputs.version }}
