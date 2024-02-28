@@ -77,8 +77,6 @@ This pull request contains the following updates:
 <!-- Describe changes --->
 ## **[${tagVersion}](https://github.com/itsferdiardiansa/Github/releases/tag/${tagVersion})**
 
-[Pull Requests](${pullRequestUrl})
-
 - ...
 
 ---
