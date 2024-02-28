@@ -50,7 +50,7 @@ jobs:
         with:
           format: "YYYY-MM-DD"
 
-      - run: echo "BASE_VERSION=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - run: echo "BASE_REVISION=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
       - run: gh auth setup-git
 
