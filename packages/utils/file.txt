@@ -12,3 +12,4 @@ optimize URL compression method
 create merge method
 
 added hash method
+updated merge method parameters
