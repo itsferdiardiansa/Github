@@ -61,11 +61,11 @@ createGitTag() {
   fi
 
 
-  # Push tag to remote repository
-  git push origin ${tagVersion}
+  # # Push tag to remote repository
+  # git push origin ${tagVersion}
 
-  # Push commit to remote branch
-  git push origin main
+  # # Push commit to remote branch
+  # git push origin main
 }
 
 genereteVersion() {
