@@ -15,4 +15,5 @@ added hash method
 updated merge method parameters
 
 add encoding method
-updated merge method
+updated merge methodup
+create JWT method
