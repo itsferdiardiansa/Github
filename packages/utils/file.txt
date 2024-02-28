@@ -1,2 +1,4 @@
 created an initial config
 updated config
+
+a multiple methods
