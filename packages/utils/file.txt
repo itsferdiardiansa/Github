@@ -2,3 +2,8 @@ created an initial config
 updated config
 
 a multiple methods
+
+create URL compression
+create number formatter
+
+create a method to convert value into slug format
