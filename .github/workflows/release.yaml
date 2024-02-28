@@ -1,23 +1,79 @@
 name: Release
-run-name: "release: ${{ inputs.tag }}"
+run-name: "release: ${{ inputs.workspace }}/${{ inputs.path }}"
 env:
   GITHUB_TOKEN: ${{ github.token }}
 on:
   workflow_dispatch:
     inputs:
-      tag:
-        description: "Type the tag"
+      workspace:
+        description: "Which workspace would you like to choose?"
+        required: true
+        type: choice
+        options:
+          - apps
+          - packages
+      type:
+        description: "What kind of version type would you like to release?"
+        required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+      path:
+        description: "Type a release path directory"
+        type: string
+        required: true
+      pull_request_url:
+        description: "Type pull request url"
+        type: string
+        required: true
+      commit_tag:
+        description: "Type the commit (SHA)"
         type: string
         required: false
 permissions: write-all
 jobs:
-  release:
+  versioning:
     runs-on: ubuntu-latest
+    env:
+      COMMIT_TAG: ${{ github.event.inputs.commit_tag }}
+      PULL_REQUEST_URL: ${{ github.event.inputs.pull_request_url }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.tag }}
+          ref: ${{ inputs.ref }}
+      
+      - name: Set current date
+        id: date
+        uses: Kaven-Universe/github-action-current-date-time@v1
+        with:
+          format: "YYYY-MM-DD"
 
-      # - run: git checkout ${{ inputs.tag }}
+      - run: echo "BASE_VERSION=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
 
-      - run: git log --oneline -10
+      - run: gh auth setup-git
+
+      # - name: Import GPG key
+      #   id: import-gpg
+      #   uses: crazy-max/ghaction-import-gpg@v4
+      #   with:
+      #     gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+      #     passphrase: ${{ secrets.PASSPHRASE }}
+      #     git_user_signingkey: true
+      #     git_commit_gpgsign: true
+
+      # - name: GPG user IDs
+      #   run: |
+      #     echo "fingerprint: ${{ steps.import-gpg.outputs.fingerprint }}"
+      #     echo "keyid:       ${{ steps.import-gpg.outputs.keyid }}"
+      #     echo "name:        ${{ steps.import-gpg.outputs.name }}"
+      #     echo "email:       ${{ steps.import-gpg.outputs.email }}"
+
+      - run: git config user.name "github-actions[bot]"
+      - run: git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      # - run: git config --global user.email "${{ steps.import-gpg.outputs.email }}"
+      # - run: git config --global user.name "${{ steps.import-gpg.outputs.name }}"
+
+      - run: . ./scripts/generate-version.sh --type=${{ github.event.inputs.type }} --workspace=${{ github.event.inputs.workspace }} --path=${{ github.event.inputs.path }}
