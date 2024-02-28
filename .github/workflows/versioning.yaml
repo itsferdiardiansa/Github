@@ -29,12 +29,12 @@ on:
         type: string
         required: true
       commit_tag:
-        description: "Type the commit (SHA)"
+        description: "Type the (SHA) commit"
         type: string
         required: false
 permissions: write-all
 jobs:
-  tagging:
+  versioning:
     runs-on: ubuntu-latest
     env:
       COMMIT_TAG: ${{ github.event.inputs.commit_tag }}
@@ -43,7 +43,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref }}
-          token: ${{ secrets.WORKFLOW_TOKEN }}
       
       - name: Set current date
         id: date
@@ -77,8 +76,4 @@ jobs:
       # - run: git config --global user.email "${{ steps.import-gpg.outputs.email }}"
       # - run: git config --global user.name "${{ steps.import-gpg.outputs.name }}"
 
-      - run: ./scripts/generate-version.sh --type=${{ github.event.inputs.type }} --workspace=${{ github.event.inputs.workspace }} --path=${{ github.event.inputs.path }}
-
-      - uses: ./.github/workflows/wc-create-pr-branch.yaml
-        with:
-          version: ${{ tagVersion }}
+      - run: . ./scripts/generate-version.sh --type=${{ github.event.inputs.type }} --workspace=${{ github.event.inputs.workspace }} --path=${{ github.event.inputs.path }}
