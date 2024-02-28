@@ -42,7 +42,7 @@ Change was created by the github actions and automation script.
   "
 }
 
-createGitTag() {
+createTag() {
   dirPath="${commands[workspace]}/${commands[path]}"
   tagVersion="${workspaceName}-${latestVersion}"
 
@@ -60,12 +60,19 @@ createGitTag() {
     git tag ${tagVersion} -m "${tagMessage}"
   fi
 
-
-  # # Push tag to remote repository
+  # Push tag to remote repository
   # git push origin ${tagVersion}
 
   # # Push commit to remote branch
   # git push origin main
+}
+
+createPullRequest() {
+  git checkout -b release/${tagVersion}
+
+  git push origin release/${tagVersion} -f
+
+  gh pr create -B main -t "release: ${tagVersion}" --body-file ./.github/PR_TEMPLATE/pr.md
 }
 
 genereteVersion() {
@@ -112,7 +119,9 @@ run() {
   updateVersion
 
   # Execute git commands
-  createGitTag
+  createTag
+
+  createPullRequest
 }
 
 run "$@"
