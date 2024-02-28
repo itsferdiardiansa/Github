@@ -98,6 +98,11 @@ createPullRequest() {
   gh pr create -B main -t "release: ${tagVersion}" --body-file ./PULL_REQUEST_TEMPLATE.md
 }
 
+createRelease() {
+  note_template="[Pull Requests](${PULL_REQUEST_URL}) | https://github.com/itsferdiardiansa/Github/compare/${workspaceName}-${previousVersion}...${workspaceName}-${latestVersion} | [Base revision](https://github.com/itsferdiardiansa/Github/tree/BASE_REVISION)"
+  gh release create "${tagVersion}" -p --title "${tagVersion}" -n "${note_template//BASE_REVISION/$BASE_REVISION}"
+}
+
 genereteVersion() {
   pkgJson="${commands[workspace]}/${commands[path]}/package.json"
   latestVersion=$(jq -r .version ${pkgJson})
@@ -146,6 +151,8 @@ run() {
   createTag
 
   createPullRequest
+
+  createRelease
 }
 
 run "$@"
