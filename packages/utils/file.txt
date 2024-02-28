@@ -4,3 +4,4 @@ updated config
 a multiple methods
 
 create URL compression
+create number formatter
