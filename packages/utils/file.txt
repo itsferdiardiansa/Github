@@ -7,3 +7,5 @@ create URL compression
 create number formatter
 
 create a method to convert value into slug format
+
+optimize URL compression method
