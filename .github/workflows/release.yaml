@@ -24,10 +24,10 @@ on:
         description: "Type a release path directory"
         type: string
         required: true
-      pull_request_url:
-        description: "Type pull request url"
-        type: string
-        required: true
+      ref:
+        description: "Released ref branch"
+        required: false
+        default: ""
       commit_tag:
         description: "Type the commit (SHA)"
         type: string
@@ -37,12 +37,12 @@ jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      COMMIT_TAG: ${{ github.event.inputs.commit_tag }}
-      PULL_REQUEST_URL: ${{ github.event.inputs.pull_request_url }}
+      COMMIT_TAG: ${{ inputs.commit_tag }}
+      REF: ${{ inputs.ref }}
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ inputs.ref }}
+          fetch-depth: 0
       
       - name: Set current date
         id: date
